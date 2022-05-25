@@ -1,5 +1,4 @@
 import sys
-
 hadError = False 
 
 def report(line, where, message):
@@ -10,26 +9,27 @@ def error(line, message):
 	report(line, "", message)
 
 def run(source):
+	from scanner import Scanner
 	scanner = Scanner(source)
 	tokens = scanner.scanTokens()
 	for token in tokens:
-		print(token)
+		print(str(token))
 
 def run_file(path):
 	source_text = ""
 	with open(path, 'r') as source_file:
-		source_text = soruce_file.read()
+		source_text = source_file.read()
 
 	run(source_text)
 	if hadError:
 		exit()
 
 
-def run_promt():
+def run_prompt():
 	while True:
 		print("> ", end='')
 		line = str(input())
-		if (line.empty()):
+		if (line == ""):
 			break
 		run(line)
 		hadError = False

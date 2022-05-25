@@ -35,3 +35,5 @@ THIS = 33
 VAR = 34
 WHILE = 35
 EOF = 36
+FOR = 37
+EQUAL = 38
