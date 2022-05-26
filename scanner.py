@@ -1,4 +1,3 @@
-from re import I
 from tokens import Token
 from token_type import (
 	AND,
