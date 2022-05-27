@@ -42,7 +42,6 @@ from token_type import (
 	OR,
 	WHILE,
 )
-from plox import error
 
 keywords = {}
 keywords["and"] = AND
@@ -64,12 +63,13 @@ keywords["while"] = WHILE
 
 
 class Scanner:
-	def __init__(self, source: str):
+	def __init__(self, source: str, error):
 		self.source = source
 		self.tokens = []
 		self.start = 0
 		self.current = 0
 		self.line = 1
+		self.error = error
 
 	def scanTokens(self):
 		while not self.isAtEnd():
@@ -130,7 +130,7 @@ class Scanner:
 			elif self.isAlpha(c):
 				self.identifier()
 			else:
-				error(self.line, "Unexpected character.")
+				self.error(self.line, f"({c})Unexpected character.")
 
 	def isDigit(self, c):
 		return c >= "0" and c <= "9"
@@ -169,7 +169,7 @@ class Scanner:
 				line += 1
 
 		if self.isAtEnd():
-			error(line, "Unterminated string.")
+			self.error(line, "Unterminated string.")
 
 		# Consume '"'
 		self.advance()
@@ -184,7 +184,7 @@ class Scanner:
 	def peekNext(self):
 		if self.current + 1 >= len(self.source):
 			return "\0"
-		return self.source(self.current + 1)
+		return self.source[self.current + 1]
 
 	def match(self, expected):
 		if self.isAtEnd():
