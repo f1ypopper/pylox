@@ -23,12 +23,32 @@ def defineAst(base_class:str, types):
 
 def main():
 	types = {
+		"Assign": ["name", "value"],
 		"Binary": ["left", "operator", "right"],
+		"Call": ["callee", "paren", "arguments"],
+		"Get": ["object", "name"],
+		"Set": ["object", "name", "value"],
 		"Grouping": ["expression"],
 		"Literal": ["value"],
-		"Unary": ["operator", "right"]
+		"Logical": ["left", "operator", "right"],
+		"Unary": ["operator", "right"],
+		"This": ["keyword"],
+		"Variable": ["name"]
 	}
 	defineAst("Expr", types)
+	defineAst(
+		"Stmt", {
+			"Block": ["statements"],
+			"Class": ["name", "methods"],
+			"Expression": ["expression"], 
+			"Function": ["name", "params", "body"],
+			"If": ["condition", "thenBranch", "elseBranch"],
+			"Print": ["expression"],
+			"Return": ["keyword","value"],
+			"Var": ["name", "initializer"],
+			"While": ["condition", "body"]
+			}
+	)
 
 if __name__ == '__main__':
 	main()

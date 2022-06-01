@@ -7,6 +7,9 @@ from expr import Expr
 class Plox:
 	def __init__(self):
 		self.hadError = False
+		self.hadRuntimeError = False
+		from interpreter import Interpreter
+		self.interpreter = Interpreter()
 
 	def report(self, line, where, message):
 		self.hadError = True
@@ -21,15 +24,19 @@ class Plox:
 		else:
 			self.report(token.line, f" at {token.lexeme}", message)
 
+	def runtimeError(self, error: RuntimeError):
+		print(f"{error.args[1]} \n[line {error.args[0].line}]")
+		self.hadRuntimeError = True
+
 	def run(self, source):
 		from scanner import Scanner
 		from parser import Parser
-		scanner = Scanner(source, self.erroR)
+		scanner = Scanner(source, self.error)
 		tokens = scanner.scanTokens()
 		parser = Parser(tokens, self.parser_error)
-		expression = parser.parse()
+		statements = parser.parse()
 		if self.hadError: return 
-		print(AstPrinter().print(expression))
+		self.interpreter.interpret(statements, self)
 
 	def run_file(self, path):
 		source_text = ""
@@ -39,7 +46,8 @@ class Plox:
 		self.run(source_text)
 		if self.hadError:
 			exit()
-
+		if self.hadRuntimeError:
+			exit()
 
 	def run_prompt(self):
 		while True:

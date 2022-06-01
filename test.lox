@@ -1,0 +1,7 @@
+class Bagel {
+	eat(){
+		print "DOG";
+	}
+}
+var bagel = Bagel();
+bagel.eat();
